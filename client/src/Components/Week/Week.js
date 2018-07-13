@@ -4,32 +4,18 @@ import PayrollTable from "./../PayrollTable/PayrollTable";
 import Modal from "react-responsive-modal";
 import axios from "axios";
 
-let axiosConfig = {
-  headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-  }
-};
-
-class Payroll extends Component {
+class Week extends Component {
   state = {
-    selectedUser: null,
-    //users: [],
-    users: [{firstName:"Sam", lastName:"Falcon", _id:"12345"},
-            {firstName:"Chris", lastName:"Marek", _id:"11111"},
-            {firstName:"Zoli", lastName:"Varju", _id:"22222"}],
+    user: this.props.user,
     week: {start:moment(), end:moment()},
     weekDiff: 0,
-    entries: [{task:"Air Tanks", date: new Date(), unitPrice: 0.5, quantity: 5, _id:"abc"},
+    entries: [
+      {task:"Air Tanks", date: new Date(), unitPrice: 0.5, quantity: 5, _id:"abc"},
       {task:"Eanx Tanks", date: new Date(), unitPrice: 1, quantity: 4, _id:"def"},
       {task:"Discover Scuba", date: new Date(), unitPrice: 50, quantity: 5, overridden:true,_id:"bcd"}
     ],
     modalOpen: false,
     modalEntry: {task:"Air Tanks", date: new Date(), unitPrice: 0.5, quantity: 5, _id:"abc"}
-  }
-
-  openModal = _id => {
-    this.setState({modalEntry:this.state.entries.find(entry=>entry._id===_id)}, ()=>{this.setState({modalOpen:true})});
   }
 
   getWorkWeek = weekDiff => {
@@ -47,39 +33,9 @@ class Payroll extends Component {
     });
   }
 
-  processUserChange = e => {
-    var where = {
-      user:e.target.value,
-      start: this.state.week.start.format("ddd MMM DD YYYY"),
-      end: this.state.week.end.format("ddd MMM DD YYYY")
-    };
-    console.log(where);
-    axios.post("/api/entries/user", {where}, axiosConfig)
-    .then(entries=>{
-      console.log(entries);
-      this.setState({selectedUser: e.target.value, entries:entries});
-    });
-  }
-
-  componentDidMount() {
-    this.setState({week: this.getWorkWeek(this.state.weekDiff)});
-    axios.get("/api/users")
-    .then(response=>{
-      console.log(response.data);
-      this.setState({users:response.data});
-    });
-  }
-
-  //"Wed Jul 11 2018""ddd MMM DD YYYY"
-
   render() {
     return (
       <div>
-        <select name="user" onChange={this.processUserChange}>
-          {this.state.users.map(user=>(
-            <option value={user._id}>{`${user.firstName} ${user.lastName}`}</option>
-          ))}
-        </select>
         <button onClick={e=>{this.changeWeek(-1)}}>Previous Week</button>
         <span>{this.state.week.start.format("MMM Do YY")}</span>
         through
@@ -101,4 +57,4 @@ class Payroll extends Component {
   }
 }
 
-export default Payroll;
+export default Week;

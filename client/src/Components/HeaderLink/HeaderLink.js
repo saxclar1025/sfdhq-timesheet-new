@@ -1,11 +1,12 @@
 import React from "react";
 
 const HeaderLink = props => {
+  console.log(props);
   return (
     <li className="nav-item">
-      <a className="nav-link" href={props.href}>
+      <span className="nav-link" onClick={props.onClick}>
         {props.text}
-      </a>
+      </span>
     </li>
   );
 }

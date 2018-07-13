@@ -5,9 +5,9 @@ const mongoose = require("mongoose");
 var app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 //app.use(express.static("public"));
-app.use(express.static("client/build"));
+app.use(express.static("client/public"));
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/sfdhq";
 

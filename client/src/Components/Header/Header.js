@@ -15,10 +15,10 @@ const Header = props => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          {props.isAdmin ? (<HeaderLink href="/admin" text="Admin"/>) : null}
-          {props.isPayroll ? (<HeaderLink href="/payroll" text="Payroll"/>) : null}
-          <HeaderLink href="/tasks" text="Log Tasks"/>
-          <HeaderLink href="/week" text="My Week"/>
+          {props.isAdmin ? (<HeaderLink onClick={props.openAdmin} text="Admin"/>) : null}
+          {props.isPayroll ? (<HeaderLink onClick={props.openPayroll} text="Payroll"/>) : null}
+          <HeaderLink onClick={props.openTasks} text="Log Tasks"/>
+          <HeaderLink onClick={props.openWeek} text="My Week"/>
         </ul>
       </div>
     </nav>

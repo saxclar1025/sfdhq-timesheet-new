@@ -51,15 +51,13 @@ module.exports = (app, db) => {
   //  [isPayroll]: Boolean (false)
   //}
   app.post("/api/users", (req,res)=>{
-    console.log("req.body");
-    console.log(req.body);
-    // db.User.create(req.body, (err, user)=>{
-    //   if(err) {
-    //     console.log(err);
-    //     return res.json(err);
-    //   }
-    //   res.json(user);
-    // });
+    db.User.create(req.body, (err, user)=>{
+      if(err) {
+        console.log(err);
+        return res.json(err);
+      }
+      res.json(user);
+    });
   });
 
   app.post("/api/users/:id", (req,res)=>{
