@@ -1,26 +1,24 @@
 const bcrypt = require("bcrypt-nodejs");
 var passport = require("passport");
-var Strategy = require('passport-local').Strategy;
+var settings = require('../config/settings');
+var passport = require("../config/passport");
 
 module.exports = (app, db) => {
-  passport.use( new Strategy(
-    function(username, password, cb) {
-      db.User.findOne({"username":username}, (err,user)=> {
-        if(err) console.log(err);
-        
-        console.log(user.validPassword(password));
-        if (!user) { return cb(null, false); }
-        if (!user.validPassword(password)) { return cb(null, false); }
-        return cb(null, user);
-      });
-    })
-  );
+  app.get("/api/currentuser", function(req, res) {
+    if (!req.user) {
+      res.json({});
+    }
+    else {
+      res.json(req.user);
+    }
+  });
 
   app.post("/api/login", passport.authenticate("local"), function(req, res) {
-    res.json(`login successful, user: ${req.user}`);
+    res.json({success:true});
   });
 
   app.get("/api/users", (req, res)=>{
+    console.log(req.user);
     db.User.find()
     .then(users=>{
       res.json(users);

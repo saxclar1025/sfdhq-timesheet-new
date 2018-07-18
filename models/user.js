@@ -76,7 +76,11 @@ UserSchema.pre("save", function(next) {
   next();
 });
 
-UserSchema.methods.validPassword = password=>bcrypt.compareSync(password, this.password);
+UserSchema.methods.validPassword = function(password, cb) {
+  bcrypt.compare(password, this.password, function(err, result){
+    cb(result);
+  });
+}
 
 var User = mongoose.model("User", UserSchema);
 

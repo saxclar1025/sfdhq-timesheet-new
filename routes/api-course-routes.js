@@ -29,7 +29,7 @@ module.exports = (app,db)=>{
     });
   });
 
-  app.post("/api/courses/delete", (req,res)=>{
+  app.post("/api/courses/delete/:id", (req,res)=>{
     db.Course.findByIdAndDelete(req.params.id)
     .then(data=>{
       res.json(data);

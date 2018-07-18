@@ -14,7 +14,6 @@ module.exports = (app,db)=>{
   });
 
   app.post("/api/entries/user/", (req,res)=>{
-    console.log("req.body");
     console.log(req.body);
     var where = {user:req.body.user};
     var dateRange = {};
@@ -29,6 +28,7 @@ module.exports = (app,db)=>{
     }
     db.Entry.find(where)
     .then(entries=>{
+      console.log(entries);
       res.json(entries);
     });
   });

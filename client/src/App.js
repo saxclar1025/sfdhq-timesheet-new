@@ -5,6 +5,9 @@ import Payroll from "./Components/Payroll/Payroll";
 import Admin from "./Components/Admin/Admin";
 import Week from "./Components/Week/Week";
 import Tasks from "./Components/Tasks/Tasks";
+import axios from "axios";
+import api from "./Components/util/api";
+import LoginModal from "./Components/LoginModal/LoginModal";
 
 class App extends Component {
   state = {
@@ -15,27 +18,37 @@ class App extends Component {
       lastName:"Falcon",
       _id:"12345",
       isPayroll:true,
-      isAdmin:true}
+      isAdmin:true},
+    loginModalOpen: true
   }
 
   openTasks = e=>{
-    console.log("clicked");
     this.setState({page:"tasks"});
   }
 
   openAdmin = e=>{
-    console.log("clicked");
     this.setState({page:"admin"});
   }
 
   openPayroll = e=>{
-    console.log("clicked");
     this.setState({page:"payroll"});
   }
 
   openWeek = e=>{
-    console.log("clicked");
     this.setState({page:"week"});
+  }
+
+  setUser = user=>{
+    this.setState({user:user});
+  }
+
+  componentDidMount() {
+    api.getCurrentUser().then(response=>{
+      console.log(response.data);
+      if(!!response.data) {
+        this.setState({loginModalOpen:false});
+      }
+    })
   }
 
   render() {
@@ -52,6 +65,7 @@ class App extends Component {
          this.state.page === "admin" ? <Admin /> :
          this.state.page === "payroll" ? <Payroll /> :
          this.state.page === "week" ? <Week /> : null}
+         <LoginModal isOpen={this.state.loginModalOpen} setUser={this.setUser}/>
       </div>
     );
   }
