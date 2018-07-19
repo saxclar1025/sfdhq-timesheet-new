@@ -10,6 +10,10 @@ var UserSchema = new Schema({
     unique: true
   },
 
+  key: {
+    type: String
+  },
+
   password: {
     type: String,
     required: true
@@ -73,6 +77,11 @@ var UserSchema = new Schema({
 
 UserSchema.pre("save", function(next) {
   this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10), null);
+  next();
+});
+
+UserSchema.post("save", function(next) {
+  this.key = this._id;
   next();
 });
 

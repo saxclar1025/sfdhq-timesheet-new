@@ -65,7 +65,7 @@ class App extends Component {
          this.state.page === "admin" ? <Admin /> :
          this.state.page === "payroll" ? <Payroll /> :
          this.state.page === "week" ? <Week /> : null}
-         <LoginModal isOpen={this.state.loginModalOpen} setUser={this.setUser}/>
+         <LoginModal isOpen={this.state.loginModalOpen} onClose={()=>null} setUser={this.setUser}/>
       </div>
     );
   }

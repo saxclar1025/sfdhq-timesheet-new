@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt-nodejs");
-var passport = require("passport");
 var settings = require('../config/settings');
 var passport = require("../config/passport");
 
@@ -18,7 +17,7 @@ module.exports = (app, db) => {
   });
 
   app.get("/api/users", (req, res)=>{
-    console.log(req.user);
+    //console.log(req.user);
     db.User.find()
     .then(users=>{
       res.json(users);

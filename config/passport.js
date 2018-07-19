@@ -10,7 +10,7 @@ passport.use( new LocalStrategy(
       else {
         user.validPassword(password, result=>{
           if(result) {
-            cb(null,user);
+            cb(null, user);
           }
           else {
             cb(null, false);
