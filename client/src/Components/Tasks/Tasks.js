@@ -6,38 +6,15 @@ import api from "./../util/api";
 
 class Tasks extends Component {
   state= {
-    user: {
-      "isAdmin": true,
-      "isCaptain": false,
-      "isInstructor": true,
-      "isPayroll": true,
-      "_id": "5b43abdb77d037140ce3b6e6",
-      "username": "sfalcon",
-      "password": "$2a$10$qF7vTs0kYeZ17/Z6raZt5.PIrV4bFquGb28DZMOCJ0T8gQC9oiC0y",
-      "firstName": "Sam",
-      "lastName": "Falcon",
-      "email": "saxclar1025@gmail.com",
-      "phone": "9546147815",
-      "hourlyRate": 15,
-      "crewRate": 40,
-      "__v": 0
-    },
+    user: this.props.user,
     date: new moment((new Date()).toDateString()),
-    entries: [
-      {task:"Air Tanks", date: new Date(), unitPrice: 0.5, quantity: 5, _id:"abc"},
-      {task:"Eanx Tanks", date: new Date(), unitPrice: 1, quantity: 4, _id:"def"},
-      {task:"Discover Scuba", date: new Date(), unitPrice: 50, quantity: 5, overridden:true,_id:"bcd"}
-    ],
-    courses: [ 
-      {name:"E-Learning Open Water", price:[350,300,275,200], commission:[170,150,130,110], requiresInstructor:true, _id: "123"},
-      {name:"Classroom Open Water", price:[395,350,300,275], commission:[195,175,150,150], requiresInstructor:true, _id:"124"},
-      {name:"Advanced Open Water", price:[360,310,310,310], commission:[175,150,150,150], requiresInstructor:true, _id: "125"}
-    ],
+    entries: [],
+    courses: [],
     selectedCourse: "0",
     formAir: 0,
     formNitrox: 0,
     formHours: 0,
-    formCourseId: null,
+    formCourseId: "",
     formCourseQuantity: 0,
     formCrewBp: 0,
     formCrewAv: 0,
@@ -57,9 +34,12 @@ class Tasks extends Component {
   }
 
   getEntries = () =>{
+    if(!this.state.user) {
+      return this.setState({entries:[]});
+    }
     //get tasks for current day and change inputs to reflect
     var tomorrow = new moment(this.state.date);
-    tomorrow.add("days", 1);
+    tomorrow.add(1, "days");
     api.getUserEntriesRange(this.state.user._id, this.state.date.toDate().toDateString(), tomorrow.toDate().toDateString())
     .then(response=>{
       this.setState({entries:response.data});
@@ -74,11 +54,30 @@ class Tasks extends Component {
     });
   }
 
+  createEntry = entry => {
+    api.createNewEntry(entry)
+    .then(this.getEntries());
+  }
+
   handleTankChange = e => {
     e.target.name==="air" ? 
-      this.setState({formAir:e.target.value})
+      this.setState({formAir:e.target.value}, ()=>{
+        this.createEntry({
+          task: "Air Tanks",
+          quantity: e.target.value,
+          date: this.state.date.toDate(),
+          user: this.state.user._id
+        })
+      })
       :
-      this.setState({formNitrox:e.target.value})
+      this.setState({formNitrox:e.target.value}, ()=>{
+        this.createEntry({
+          task: "Eanx Tanks",
+          quantity: e.target.value,
+          date: this.state.date.toDate(),
+          user: this.state.user._id
+        })
+      })
   }
 
   handleCrewChange = e=>{
@@ -163,7 +162,7 @@ class Tasks extends Component {
           }
           <h3>Classes</h3>
           <select name="courseId" value={this.state.formCourseId} onChange={e=>{this.setState({formCourseId:e.target.value})}}>
-            {this.state.courses.map(course=>(<option value={course._id}>{course.name}</option>))}
+            {this.state.courses.map(course=>(<option key={course._id} value={course._id}>{course.name}</option>))}
           </select>
           <label>Quantity: </label>
           <input type="number" min={0} name="courseQuantity" value={this.state.formCourseQuantity} onChange={e=>{this.setState({formCourseQuantity:e.target.value})}}/>

@@ -27,7 +27,7 @@ class LoginModal extends Component {
 
   render() {
     return (
-      <Modal open={this.state.isOpen}>
+      <Modal open={this.state.isOpen} onClose={this.props.onClose}>
         <div className="row mx-auto">
           <div className="col-md-6 col-12">
             <label>Username:</label>

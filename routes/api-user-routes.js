@@ -16,6 +16,11 @@ module.exports = (app, db) => {
     res.json({success:true});
   });
 
+  app.post("/api/logout", (req,res)=>{
+    req.logout();
+    res.json("Logged out");
+  });
+
   app.get("/api/users", (req, res)=>{
     //console.log(req.user);
     db.User.find()

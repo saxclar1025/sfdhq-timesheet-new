@@ -7,16 +7,8 @@ class Admin extends Component {
     userModalOpen: false,
     classesModalOpen: false,
     messageModalOpen: false,
-    users: [
-      {firstName:"Sam", lastName:"Falcon", _id:"12345"},
-      {firstName:"Chris", lastName:"Marek", _id:"11111"},
-      {firstName:"Zoli", lastName:"Varju", _id:"22222"}
-    ],
-    courses: [ 
-      {name:"E-Learning Open Water", price:[350,300,275,200], commission:[170,150,130,110], requiresInstructor:true},
-      {name:"Classroom Open Water", price:[395,350,300,275], commission:[195,175,150,150], requiresInstructor:true},
-      {name:"Advanced Open Water", price:[360,310,310,310], commission:[175,150,150,150], requiresInstructor:true}
-    ],
+    users: [],
+    courses: [],
     firstName: "",
     lastName: "",
     userName: "",
@@ -283,7 +275,7 @@ class Admin extends Component {
           <div>  
             <select onChange={this.populateUserForm}>
               <option value="0">New User</option>
-              {this.state.users.map(user=>(<option value={user._id}>{`${user.firstName} ${user.lastName}`}</option>))}
+              {this.state.users.map(user=>(<option key={user._id} value={user._id}>{`${user.firstName} ${user.lastName}`}</option>))}
             </select>
           </div>
           <div className="row">
@@ -362,7 +354,7 @@ class Admin extends Component {
           <div>  
             <select onChange={this.populateCourseForm}>
               <option value="0">New Course</option>
-              {this.state.courses.map(course=>(<option value={course._id}>{course.name}</option>))}
+              {this.state.courses.map(course=>(<option key={course._id} value={course._id}>{course.name}</option>))}
             </select>
           </div>
           <div className="row">

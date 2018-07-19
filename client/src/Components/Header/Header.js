@@ -19,6 +19,7 @@ const Header = props => {
           {props.isPayroll ? (<HeaderLink onClick={props.openPayroll} text="Payroll"/>) : null}
           <HeaderLink onClick={props.openTasks} text="Log Tasks"/>
           <HeaderLink onClick={props.openWeek} text="My Week"/>
+          <HeaderLink onClick={props.logout} text="Logout"/>
         </ul>
       </div>
     </nav>

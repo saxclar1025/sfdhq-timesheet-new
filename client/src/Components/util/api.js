@@ -5,6 +5,10 @@ const api = {
     return axios.post("/api/login", {username:username, password:password});
   },
 
+  logout: () => {
+    return axios.post("/api/logout");
+  },
+
   getAllUsers: () => {
     return axios.get("/api/users");
   },

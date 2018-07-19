@@ -34,12 +34,19 @@ module.exports = (app,db)=>{
   });
 
   app.post("/api/entries", (req,res)=>{
-    db.Entry.create(req.body, (err,entry)=>{
-      if(err) {
-        return res.json(err);
-      }
-      res.json(entry);
-    });
+    if (req.body.quantity === 0) {
+      db.Entry.findOneAndDelete({date:req.body.date, task:req.body.task, user:req.body.user}, entry=>{
+        return res.json(entry);
+      });
+    }
+    else {
+      db.Entry.create(req.body, (err,entry)=>{
+        if(err) {
+          return res.json(err);
+        }
+        res.json(entry);
+      });
+    }
   });
 
   app.post("/api/entries/:id", (req,res)=>{
